@@ -21,7 +21,7 @@ export const fetchSitter = createAsyncThunk(
   async (id) => {
     try {
       const { data } = await axios.get(
-        `https://backendpawbnb-production.up.railway.app/sitters/${id}`
+        `/sitters/${id}`
         //`http://localhost:3000/sitters/${id}`
       );
       return data;
@@ -71,7 +71,7 @@ export const sitterSlice = createSlice({
     updateSitter: async (state, action) => {
       try {
         const { data } = await axios.put(
-          `https://backendpawbnb-production.up.railway.app/sitters/${action.payload.id}`,
+          `/sitters/${action.payload.id}`,
           //`http://localhost:3000/sitters/${action.payload.id}`,
           action.payload.updatedSitter
         );

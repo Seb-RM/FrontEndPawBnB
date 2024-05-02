@@ -18,7 +18,7 @@ const DetalleSolicitud = ({ id}) => {
     const buscarReserva = async () => {
       try {
         const { data } = await axios.get(
-          `https://backendpawbnb-production.up.railway.app/bookings/${id}`
+          `/bookings/${id}`
         );
         console.log("la data es", data);
         setReserva(data);
@@ -38,7 +38,7 @@ const DetalleSolicitud = ({ id}) => {
     const actualizarReserva = async () => {
       try {
         let reservaModificada = await axios.put(
-          `https://backendpawbnb-production.up.railway.app/bookings/status/${id}`,
+          `/bookings/status/${id}`,
           {status: "activo"} 
           );
            if(reservaModificada.status===200){
@@ -57,7 +57,7 @@ const DetalleSolicitud = ({ id}) => {
     const actualizarReserva = async () => {
         try {
           let reservaModificada = await axios.put(
-            `https://backendpawbnb-production.up.railway.app/bookings/status/${id}`,
+            `/bookings/status/${id}`,
             {status: "cancelado"} 
             );
             console.log(reservaModificada)

@@ -25,7 +25,7 @@ const FormInfoSitter = () => {
   const currentSitter = async () => {
     try {
       const { data } = await axios.get(
-        `https://backendpawbnb-production.up.railway.app/sitters/${id}`
+        `/sitters/${id}`
       );
       dispatch(sitterInfo(data));
     } catch (error) {

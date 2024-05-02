@@ -5,34 +5,33 @@ const signUpSlice = createSlice({
   name: "signup",
   initialState: {
     success: false,
-  }
+  },
 });
 
-export const signUpOwner = (data, role, navigate) => async (dispatch) =>{
+export const signUpOwner = (data, role, navigate) => async (dispatch) => {
   try {
-    console.log(data)
+    console.log(data);
     if (role === "Owner") {
       console.log("llegue");
       //const endpoint = "http://localhost:3000/owners";
-      const endpoint = "https://backendpawbnb-production.up.railway.app/owners";
+      const endpoint = "/owners";
       const response = await axios.post(endpoint, data);
 
       const userId = response.data.id;
       const userRole = response.data.role;
-      console.log({userRole})
+      console.log({ userRole });
       // if (response.data.id) {
 
       //   navigate("/Login");
       // }
       return { userId, userRole };
-
     } else if (role === "DogSitter") {
       console.log("Llegue a DogSitters");
       //const endpoint = "http://localhost:3000/sitters";
-      const endpoint = "https://backendpawbnb-production.up.railway.app/sitters";
+      const endpoint = "/sitters";
       const response = await axios.post(endpoint, data);
-  
-      const  userId = response.data.id;
+
+      const userId = response.data.id;
       const userRole = response.data.role;
       // if (response.data.id) {
       //   navigate("/Login");

@@ -30,28 +30,22 @@ const ReservationRequest = () => {
     dispatch(loadDogsByOwner(userId));
   };
 
- console.log("PARA PROBAR")
+  console.log("PARA PROBAR");
 
   const getSitter = () => {
-
     let dogSitter = sitters.filter((s) => s.id == URL[URL.length - 1])[0];
-    return dogSitter.id
-
-    
-
+    return dogSitter.id;
   };
-  const getSitterRate =()=>{
+  const getSitterRate = () => {
     let dogSitterRate = sitters.filter((s) => s.id == URL[URL.length - 1])[0];
-    console.log("DOGSITTER",dogSitterRate)
-    return dogSitterRate.rates
-  }
-
- 
+    console.log("DOGSITTER", dogSitterRate);
+    return dogSitterRate.rates;
+  };
 
   useEffect(() => {
     getDogs();
     console.log({ URL });
-    console.log({ sitters, userId, owner, auth, dogs, sitterId: getSitter() },);
+    console.log({ sitters, userId, owner, auth, dogs, sitterId: getSitter() });
   }, []);
 
   return (
@@ -120,12 +114,10 @@ const ReservationRequest = () => {
         const handlePayment = async () => {
           try {
             const response = await axios.post(
-              "https://backendpawbnb-production.up.railway.app/payment/create-checkout-session",
+              "/payment/create-checkout-session",
 
-               { productPrice: getSitterRate() } 
+              { productPrice: getSitterRate() }
               // Aquí envías el precio del cuidador seleccionado
-
-             
             );
             const url = response.data.url;
             window.location.href = url;
@@ -135,9 +127,8 @@ const ReservationRequest = () => {
         };
 
         // Llamamos a la función de pago
-         handlePayment();
-      }}
-    >
+        handlePayment();
+      }}>
       {({ errors }) => (
         //{( {values, errors, touched, handleSubmit, handleChange, handleBlur }) => (
         <Form className={styles.formulario}>
@@ -193,8 +184,7 @@ const ReservationRequest = () => {
                 as="select"
                 className={styles.options}
                 key={`${Math.random()}`}
-                placeholder="Reservacion para..."
-              >
+                placeholder="Reservacion para...">
                 {dogs
                   ? dogs.map((dog) => {
                       return <option value={dog.id}>{dog.name}</option>;

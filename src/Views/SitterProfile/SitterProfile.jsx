@@ -5,7 +5,7 @@ import SitterPresentation from "../../Components/SitterPresentation/SitterPresen
 import SitterRates from "../../Components/SitterRates/SitterRates";
 import { sitterInfo, fetchSitter } from "../../redux/sitterSlice";
 import Gallery from "../../Components/Gallery/Gallery";
-import axios from 'axios';
+import axios from "axios";
 import style from "./SitterProfile.module.css";
 
 import { useEffect, useState } from "react";
@@ -16,10 +16,13 @@ const SitterProfile = () => {
   const dispatch = useDispatch();
   const [review, setReview] = useState([]);
   const [comment, setComment] = useState(review);
-  const imgDefault = "https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg";
-  
+  const imgDefault =
+    "https://thumbs.dreamstime.com/b/vector-de-perfil-avatar-predeterminado-foto-usuario-medios-sociales-icono-183042379.jpg";
+
   const infoSitter = useSelector((state) => state.sitter);
-  const completedProfile = useSelector((state) => state.sitter.completedProfile);
+  const completedProfile = useSelector(
+    (state) => state.sitter.completedProfile
+  );
   /* console.log(completedProfile) */
   const noPhotos = !infoSitter.photos || infoSitter.photos.length === 0;
 
@@ -27,7 +30,7 @@ const SitterProfile = () => {
     const fetchSitterData = async () => {
       try {
         const actionResult = await dispatch(fetchSitter(id));
-        
+
         if (fetchSitter.fulfilled.match(actionResult)) {
           const sitterData = actionResult.payload;
           dispatch(sitterInfo(sitterData));
@@ -44,17 +47,17 @@ const SitterProfile = () => {
 
     const reviewAsync = async () => {
       try {
-        const { data } = await axios.get(`https://backendpawbnb-production.up.railway.app/review/${id}`);
+        const { data } = await axios.get(`/review/${id}`);
         setReview(data);
-        if(data.length > 2){
-          setComment(data.slice(0,2));
-        }else{
+        if (data.length > 2) {
+          setComment(data.slice(0, 2));
+        } else {
           setComment(data);
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
-    }
+    };
 
     reviewAsync();
 
@@ -63,8 +66,8 @@ const SitterProfile = () => {
 
   const allComment = () => {
     setComment(review);
-    document.getElementById('allViews').style.display = ('none');
-  }
+    document.getElementById("allViews").style.display = "none";
+  };
 
   return (
     <div className="container col-10 my-5">
@@ -75,7 +78,7 @@ const SitterProfile = () => {
         {console.log(completedProfile)} */}
 
       <section className="container mx-4">
-        <SitterPresentation infoSitter={infoSitter} id={id} review={review}/>
+        <SitterPresentation infoSitter={infoSitter} id={id} review={review} />
       </section>
       {/* {console.log("haciendo prueba de git")} */}
       <section className="container mt-4">
@@ -84,7 +87,7 @@ const SitterProfile = () => {
       </section>
       <section className="container mt-4">
         <h2>Reseñas de {infoSitter.name}</h2>
-        {review?.length>0?
+        {review?.length > 0 ? (
           <>
             {comment.map((allReview) => (
               <CardReview
@@ -92,24 +95,38 @@ const SitterProfile = () => {
                 comment={allReview?.comment}
                 rating={allReview?.rating}
                 name={allReview?.Owner?.name}
-                photo={allReview?.Owner?.photo? allReview?.Owner.photo : imgDefault}
+                photo={
+                  allReview?.Owner?.photo ? allReview?.Owner.photo : imgDefault
+                }
               />
             ))}
-            {review.length > 2 && <button id="allViews" className="mt-4" onClick={allComment}>Ver mas Reviews</button>}
+            {review.length > 2 && (
+              <button id="allViews" className="mt-4" onClick={allComment}>
+                Ver mas Reviews
+              </button>
+            )}
           </>
-          :
+        ) : (
           <p>No hay reseñas actualmente</p>
-        }
-        
+        )}
       </section>
       {noPhotos ? (
-      <section className="container mt-4">
-        <h2>Agrega fotos en <a href={`/dashboardSitter/${id}`} className={style.link}>Mi Galeria</a>.</h2>
-        <Gallery infoSitter={infoSitter} id={id}/>
-      </section>) : (<section className="container mt-4">
-        <h2>Galeria de {infoSitter.name}</h2>
-        <Gallery infoSitter={infoSitter} id={id}/>
-      </section>)}
+        <section className="container mt-4">
+          <h2>
+            Agrega fotos en{" "}
+            <a href={`/dashboardSitter/${id}`} className={style.link}>
+              Mi Galeria
+            </a>
+            .
+          </h2>
+          <Gallery infoSitter={infoSitter} id={id} />
+        </section>
+      ) : (
+        <section className="container mt-4">
+          <h2>Galeria de {infoSitter.name}</h2>
+          <Gallery infoSitter={infoSitter} id={id} />
+        </section>
+      )}
 
       <section className="col-12">
         <SitterRates infoSitter={infoSitter} />
@@ -117,6 +134,5 @@ const SitterProfile = () => {
     </div>
   );
 };
-
 
 export default SitterProfile;

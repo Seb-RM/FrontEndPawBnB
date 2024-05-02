@@ -18,7 +18,7 @@ const FormDashboardDueño = () => {
 
   const currentSitter = async () => {
     try {
-      const { data } = await axios.get(`https://backendpawbnb-production.up.railway.app/owners/${id}`);
+      const { data } = await axios.get(`/owners/${id}`);
       dispatch(infoOwner(data));
     } catch (error) {
       console.error(error.message);

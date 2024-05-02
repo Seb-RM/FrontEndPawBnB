@@ -63,9 +63,9 @@ const UsersPanel = () => {
       // Determinar la URL de la solicitud DELETE según el rol del usuario
       let deleteUrl;
       if (role === "Owner") {
-        deleteUrl = `https://backendpawbnb-production.up.railway.app/owners/delete/${userId}`;
+        deleteUrl = `/owners/delete/${userId}`;
       } else if (role === "DogSitter") {
-        deleteUrl = `https://backendpawbnb-production.up.railway.app/sitters/delete/${userId}`;
+        deleteUrl = `/sitters/delete/${userId}`;
       } else {
         console.error("Rol de usuario no válido:", role);
         return;

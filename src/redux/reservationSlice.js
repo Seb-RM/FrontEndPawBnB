@@ -1,15 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const sendReservation = createAsyncThunk( //envia la reserva
+export const sendReservation = createAsyncThunk(
+  //envia la reserva
   "reservations/sendReservation",
   async (valores) => {
     try {
-
-      console.log("los valores son", { valoresResSlic:valores });
-
-      
-
+      console.log("los valores son", { valoresResSlic: valores });
 
       const peticion = {
         dateCheckIn: valores.dateCheckIn,
@@ -26,7 +23,7 @@ export const sendReservation = createAsyncThunk( //envia la reserva
       console.log({ peticion: valores });
 
       let { data } = await axios.post(
-        "https://backendpawbnb-production.up.railway.app/bookings",
+        "/bookings",
         //"http://localhost:3000/bookings",
         peticion
       );
@@ -39,21 +36,21 @@ export const sendReservation = createAsyncThunk( //envia la reserva
     }
   }
 );
-export const updateStatus = createAsyncThunk( //actualiza el estado de la reserva
+export const updateStatus = createAsyncThunk(
+  //actualiza el estado de la reserva
   "reservations/updateStatus",
   async ({ id, status }) => {
     try {
-      const { data } = await axios.put (`https://backendpawbnb-production.up.railway.app/bookings/status/${id}`,{status});
+      const { data } = await axios.put(`/bookings/status/${id}`, { status });
       //const { data } = await axios.put (`http://localhost:3000/bookings/status/${id}`,{status});
       return data;
-    }catch(error){
-      console.error({ mesagge: "Error al actualizar el estado de la reserva", error });
+    } catch (error) {
+      console.error({
+        mesagge: "Error al actualizar el estado de la reserva",
+        error,
+      });
       throw error;
-    
-
-
     }
-    
   }
 );
 //Almacen para los estados
@@ -72,7 +69,7 @@ export const reservationSlice = createSlice({
       state.currentReservation = action.payload;
     },
   },
-  
+
   extraReducers: (builder) => {
     builder.addCase(getReservation.fulfilled, (state, action) => {
       state.reservations = [action.payload];
@@ -81,34 +78,35 @@ export const reservationSlice = createSlice({
       state.reservations = [...state.reservations, action.payload];
     });
     builder.addCase(updateStatus.fulfilled, (state, action) => {
-      const index = state.reservations.findIndex((item)=> item.id ===action.payload.id );
-      if (index !== -1 ) {
-        state.reservations[index]=action.payload; //actualiza el estado de la reserva
+      const index = state.reservations.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.reservations[index] = action.payload; //actualiza el estado de la reserva
       } else {
         console.log("No se encontro la reserva");
       }
-      
-    })
+    });
   },
 });
 
-export const getReservation = createAsyncThunk (
+export const getReservation = createAsyncThunk(
   "reservation/getReservation",
-  async ( id ) => {
+  async (id) => {
     try {
-
-      const { data } = await axios.get(`https://backendpawbnb-production.up.railway.app/bookings/owner/${id}`);
+      const { data } = await axios.get(`/bookings/owner/${id}`);
       //const { data } = await axios.get(`http://localhost:3000/bookings/owner/${id}`);
-      console.log(data)
-      
+      console.log(data);
+
       return data;
-    }catch(error){
+    } catch (error) {
       console.error({ mesagge: "Error al encontrar la reserva", error });
       throw error;
     }
-  })
+  }
+);
 
-  //http://localhost:3000/bookings/owner/c928b4e0-d78f-4cb7-ab79-51e3ec508e1e
+//http://localhost:3000/bookings/owner/c928b4e0-d78f-4cb7-ab79-51e3ec508e1e
 
 export const { setReservations, setCurrentReservation } =
   reservationSlice.actions;

@@ -5,13 +5,13 @@ import { loginFailure, loginStart, loginSuccess } from "./authSlice";
 export const fetchUsers = () => async (dispatch) => {
   try {
     // Primera llamada a axios para obtener sitters
-    // const sittersResponse = await axios.get("https://backendpawbnb-production.up.railway.app/sitters");
-    const sittersResponse = await axios.get("https://backendpawbnb-production.up.railway.app/sitters");
+    
+    const sittersResponse = await axios.get("/sitters");
     const sitters = sittersResponse.data? sittersResponse.data : [];
 
     // Segunda llamada a axios para obtener owners
-    // const ownersResponse = await axios.get("https://backendpawbnb-production.up.railway.app/owners");
-    const ownersResponse = await axios.get("https://backendpawbnb-production.up.railway.app/owners");
+    
+    const ownersResponse = await axios.get("/owners");
     const owners = ownersResponse.data ?ownersResponse.data : [];
 
     // Dispatch para inicializar tanto sitters como owners
@@ -126,13 +126,13 @@ export const loginAdmin = (formData) => async (dispatch) => {
   dispatch(loginStart());
   try {
     const response = await axios.post(
-      `https://backendpawbnb-production.up.railway.app/admin/login`,
+      `/admin/login`,
       formData
     );
     if(response.data){
       const { userId, userRole, userDeleted } = response.data;
       dispatch(loginSuccess(response.data));
-      const requestedInfo = await axios.get(`https://backendpawbnb-production.up.railway.app/admin/${userId}`);
+      const requestedInfo = await axios.get(`/admin/${userId}`);
       if(requestedInfo) {
         dispatch(setAdminInfo(requestedInfo.data));
       }
@@ -155,11 +155,11 @@ export const loginAdmin = (formData) => async (dispatch) => {
 export const getUserInfo = ( id, role) => async (dispatch)=> {
   try {
     if( role === "Owner") {
-      const response = await axios.get(`https://backendpawbnb-production.up.railway.app/owners/${id}`);
+      const response = await axios.get(`/owners/${id}`);
       console.log(response.data)
       dispatch(setUserInfo(response.data));
     }else {
-      const response = await axios.get(`https://backendpawbnb-production.up.railway.app/sitters/${id}`);
+      const response = await axios.get(`/sitters/${id}`);
       dispatch(setUserInfo(response.data));
     }
   } catch (error) {

@@ -27,7 +27,7 @@ const Cards = () => {
 
     const reviewAsync = async () => {
       try {
-        const { data } = await axios.get(`https://backendpawbnb-production.up.railway.app/review`);
+        const { data } = await axios.get(`/review`);
         setAllReview(data);
       } catch (error) {
         console.error('Error:', error);

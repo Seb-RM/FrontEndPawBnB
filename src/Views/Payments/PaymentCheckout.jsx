@@ -4,9 +4,7 @@ import React from "react";
 const PaymentCheckout = () => {
   const handlePayment = async () => {
     try {
-      const response = await axios.post(
-        "https://backendpawbnb-production.up.railway.app/payment/create-checkout-session"
-      );
+      const response = await axios.post("/payment/create-checkout-session");
       const url = response.data.url;
       window.location.href = url;
     } catch (error) {
